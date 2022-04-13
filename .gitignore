@@ -1,12 +1,14 @@
 # Датасет не загружать
-/data/X_nup.xlsx
-/data/X_bp.xlsx
-/data/data_merged.xlsx
-/data/data_cleaned.xlsx
+/data/*
+!/data/.gitkeep
 
-# Вспомогательные файлы ноутбука не загружать
+# Модели не загружать
+/models/*
+!/models/.gitkeep
+
+# Вспомогательные файлы notebook не загружать
 /notebooks/.ipynb_checkpoints/
 
-# Модели тоже не загружать
-/models/*
-!/models/readme.txt
+# Вспомогательные файлы pycharm не загружать
+/.idea
+
