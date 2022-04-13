@@ -1,0 +1,8 @@
+# Датасет не загружаю
+/data/X_nup.xlsx
+/data/X_bp.xlsx
+/data/data_merged.xlsx
+/data/data_cleaned.xlsx
+
+# Вспомогательные файлы юпитер ноутбука не нужно загружаю
+/notebooks/.ipynb_checkpoints/
