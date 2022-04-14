@@ -73,7 +73,9 @@ def get_data_from_form(features, params):
     # Проверка отсутствующих значений
     if None in data.values():
         error += f'Некоторые значения отсутствуют!\n'
-    return data, error
+    # Заменить сокращенные имена признаков на полные
+    data_clean = dict(zip(features.values(), data.values()))
+    return data_clean, error
 
 
 # Загрузка объекта pickle
@@ -119,7 +121,6 @@ def features_page():
         if error == '':
             # Входные данные корректны, выполняется логика
             x = pd.DataFrame(data, index=[0])
-            x.columns = list(features.values())
             result = str(x.to_html())
     # Отображение результата
     return render_template('features.html', params=params, error=error, result=result)
@@ -144,10 +145,13 @@ def model_1_2_page():
     # Переменные для формы
     # params = {'var1': '', 'var2': '', 'var3': '', 'var4': '', 'var5': '', 'var6': '', 'var7': '',
     #           'var10': '', 'var11': '', 'var12': '', 'var13': ''}
-    # тестовый пример 19     var8=70 var9=3000
-    params = {'var1': '3.55', 'var2': '1880', 'var3': '313', 'var4': '129', 'var5': '21.25', 'var6': '300', 'var7': '210',
-              'var10': '220', 'var11': '0', 'var12': '10', 'var13': '80'}
+    # тестовый пример 19, var8=73.62282622 var9=2519.45385534
+    params = dict(zip(features.keys(), ['4.02912621359223', '1880.0', '622.0', '111.86',
+         '22.2678571428571', '284.615384615384', '470.0', '220.0', '90.0',
+         '4.0', '60.0']))
+    #
     error = ''
+    x = pd.DataFrame()
     var8 = ''
     var9 = ''
     # Получены данные из формы
@@ -157,21 +161,20 @@ def model_1_2_page():
         if error == '':
             # Входные данные корректны, выполняется логика
             x = pd.DataFrame(data, index=[0])
-            x.columns = list(features.values())
             # для модуля упругости при растяжении
             preprocessor1 = load_pickle_obj('preprocessor1')
             model1 = load_pickle_obj('model1_best')
             x1 = preprocessor1.transform(x)
-            y1 = model1.predict(x)
+            y1 = model1.predict(x1)
             var8 = y1[0]
             # для прочности при растяжении
             preprocessor2 = load_pickle_obj('preprocessor2')
             model2 = load_pickle_obj('model2_best')
             x2 = preprocessor2.transform(x)
-            y2 = model2.predict(x)
+            y2 = model2.predict(x2)
             var9 = y2[0]
     # Отображение результата
-    return render_template('model_1_2.html', params=params, error=error, var8=var8, var9=var9)
+    return render_template('model_1_2.html', params=params, error=error, inputs=x.to_html(), var8=var8, var9=var9)
 
 
 @app.route('/model_3/', methods=['post', 'get'])
@@ -194,9 +197,13 @@ def model_3_page():
     # Переменные для формы
     # params = {'var2': '', 'var3': '', 'var4': '', 'var5': '', 'var6': '', 'var7': '',
     #           'var8': '', 'var9': '', 'var10': '', 'var11': '', 'var12': '', 'var13': ''}
-    params = {'var2': '2000', 'var3': '1999', 'var4': '95', 'var5': '25', 'var6': '255', 'var7': '720',
-              'var8': '70', 'var9': '2300', 'var10': '180', 'var11': '0', 'var12': '8', 'var13': '52'}
+    # тестовый пример 19, var1=1.91201925
+    params = dict(zip(features.keys(), ['1880.0', '622.0', '111.86', '22.2678571428571',
+       '284.615384615384', '470.0', '73.3333333333333',
+       '2455.55555555555', '220.0', '90.0', '4.0', '60.0']))
+    #
     error = ''
+    x = pd.DataFrame()
     var1 = ''
     # Получены данные из формы
     if request.method == 'POST':
@@ -205,15 +212,14 @@ def model_3_page():
         if error == '':
             # Входные данные корректны, выполняется логика
             x = pd.DataFrame(data, index=[0])
-            x.columns = list(features.values())
             # для соотношения матрица-наполнитель
             preprocessor3 = load_pickle_obj('preprocessor3')
-            model3 = load_pickle_obj('model3_base')
+            model3 = load_pickle_obj('model3_2')
             x3 = preprocessor3.transform(x)
-            y3 = model3.predict(x)
+            y3 = model3.predict(x3)
             var1 = y3[0]
     # Отображение результата
-    return render_template('model_3.html', params=params, error=error, var1=var1)
+    return render_template('model_3.html', params=params, error=error, inputs=x.to_html(), var1=var1)
 
 
 @app.route('/')

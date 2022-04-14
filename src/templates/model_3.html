@@ -7,8 +7,6 @@
 <body>
     <h2>Прогнозирование соотношения матрица-наполнитель</h2>
 
-	<h3>Введите входные переменные:</h3>
-
     {% if error %}
         <pre style="color:DarkRed">{{ error }}</pre>
     {% endif %}
@@ -68,12 +66,22 @@
     </form>
 
     {% if var1 %}
-		<h3>Результат:</h3>
+		<p>Входные переменные:</p>
+		{{ inputs|safe }}
 
-		<p>
-		    <span>Соотношение матрица-наполнитель: </span>
-			<span>{{ var1 }}</span>
-		</p>
+		<p>Результат модели:</p>
+		<table border="1" class="dataframe">
+		  <thead>
+			<tr>
+			  <th>Соотношение матрица-наполнитель</th>
+			</tr>
+		  </thead>
+		  <tbody>
+			<tr>
+			  <td>{{ var1 }}</td>
+			</tr>
+		  </tbody>
+		</table>
 
     {% endif %}
 
