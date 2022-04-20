@@ -214,7 +214,7 @@ def model_3_page():
             x = pd.DataFrame(data, index=[0])
             # для соотношения матрица-наполнитель
             preprocessor3 = load_pickle_obj('preprocessor3')
-            model3 = load_pickle_obj('model3_2')
+            model3 = load_pickle_obj('model3_1')
             x3 = preprocessor3.transform(x)
             y3 = model3.predict(x3)
             var1 = y3[0]
